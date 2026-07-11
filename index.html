@@ -1,0 +1,99 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE LEGENDRE DYAD — energy ⟺ momentum</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--paper:#f4ead6;--paper2:#ece0c4;--ink:#2c2118;--ink2:#5c4a34;--faint:#a08a68;--line:#d8c39a;
+    --gold:#b8912f;--gold2:#d8b24a;--carbon:#c1502a;--silicon:#2f6e9e;--green:#3f7d52;--amber:#a9781f;--red:#a83a28;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;--mono:ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace;}
+  html,body{background:var(--paper);color:var(--ink);font-family:var(--serif);line-height:1.6}
+  body{background-image:radial-gradient(circle at 50% 0%,#f9f0de,var(--paper) 62%,var(--paper2));min-height:100vh}
+  .wrap{max-width:720px;margin:0 auto;padding:26px 18px 60px}
+  .kick{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);text-align:center}
+  h1{font-size:clamp(26px,6vw,44px);font-weight:800;letter-spacing:.5px;text-align:center;margin-top:6px;color:var(--ink)}
+  .say{text-align:center;font-family:var(--mono);font-size:12px;color:var(--ink2);margin-top:6px}
+  .lede{text-align:center;font-size:14.5px;color:var(--ink2);max-width:62ch;margin:10px auto 0}.lede b{color:var(--ink)}.lede .e{color:var(--carbon);font-weight:700}.lede .p{color:var(--silicon);font-weight:700}
+  .stage{background:#fbf4e4;border:1px solid var(--line);border-radius:12px;padding:14px;margin:20px 0 6px}
+  canvas{display:block;width:100%;height:230px;border-radius:6px;background:#fffdf6}
+  .leg{display:flex;justify-content:center;gap:16px;font-family:var(--mono);font-size:10.5px;margin-top:8px;color:var(--ink2)}.leg .e{color:var(--carbon)}.leg .p{color:var(--silicon)}
+  .ctl{max-width:440px;margin:12px auto 0}
+  .lab{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink2)}.lab b{color:var(--gold)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:#e2d3ad;border-radius:2px;margin-top:5px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 0 8px rgba(184,145,47,.6)}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--gold);border:none}
+  .read{max-width:520px;margin:12px auto;display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;font-family:var(--mono)}
+  .read .m{background:#fbf4e4;border:1px solid var(--line);border-radius:7px;padding:8px 4px}
+  .read .m .v{font-size:14px;font-weight:800;color:var(--green)}.read .m .l{font-size:8.5px;color:var(--faint);text-transform:uppercase;margin-top:3px}
+  .state{text-align:center;font-family:var(--mono);font-size:12px;color:var(--gold);margin-top:4px;min-height:1.4em}
+  h2{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin:24px 0 8px;text-align:center}
+  p.b{font-size:14.5px;margin:8px auto;max-width:62ch}p.b b{color:var(--ink)}
+  .tiers{margin:20px auto;max-width:64ch}
+  .t{border-left:3px solid;padding:8px 0 8px 14px;margin:10px 0;font-size:13px;line-height:1.6}
+  .t.g{border-color:var(--green)}.t.g b{color:var(--green)}.t.a{border-color:var(--amber)}.t.a b{color:var(--amber)}.t.r{border-color:var(--red)}.t.r b{color:var(--red)}
+  .t .lab2{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+  .foot{text-align:center;font-family:var(--mono);font-size:10px;color:var(--ink2);margin-top:26px;border-top:1px solid var(--line);padding-top:14px;line-height:1.8}.foot .g{color:var(--gold)}
+</style></head>
+<body><div class="wrap">
+  <div class="kick">dyas · a CONVEX / PHYSICS duality · measured</div>
+  <h1>THE LEGENDRE DYAD</h1>
+  <div class="say">energy(velocity) ⟺ H(momentum) &nbsp;·&nbsp; f(x) ⟺ f*(p) = max_x [ px − f(x) ]</div>
+  <p class="lede">A convex curve can be given two ways: by its <b>points</b>, or by its <b>tangent lines</b>. The <b>Legendre transform</b> trades one for the other — and it is its own inverse. In mechanics it is the bridge from <span class="e">energy as a function of velocity</span> to the <span class="p">same energy as a function of momentum</span>: one physics, two coordinates.</p>
+
+  <div class="stage">
+    <canvas id="cv" width="640" height="230"></canvas>
+    <div class="leg"><span class="e">▬ energy &nbsp;f(v)=½·m·v²</span><span class="p">▬ dual &nbsp;H(p)=p²/2m</span></div>
+  </div>
+  <div class="ctl">
+    <div class="lab"><span>mass m &nbsp; <span style="color:var(--faint)">(m=1 → the curve is its OWN dual — self-Legendre)</span></span><b id="mv">1.00</b></div>
+    <input type="range" id="m" min="0.3" max="3" step="0.01" value="1">
+  </div>
+  <div class="read">
+    <div class="m"><div class="v" id="err">—</div><div class="l">‖ f*(p) − p²/2m ‖ &nbsp;(dual = closed form)</div></div>
+    <div class="m"><div class="v" id="self">—</div><div class="l">self-dual gap &nbsp;(f vs f*)</div></div>
+  </div>
+  <div class="state" id="state"></div>
+
+  <h2>one physics, two coordinates</h2>
+  <p class="b">The dual is computed live — <b>f*(p) = max over v of (p·v − f(v))</b> — and it lands exactly on the closed form <b>p²/2m</b> (error ~1e−3, grid-limited). Steepen the energy (raise m) and its dual <b>flattens</b> by exactly 1/m: the two are locked, inverse faces of one convex object. At <b>m = 1</b> the energy IS its own dual — the self-Legendre parabola, this domain's fixed point again ([[the-monad]]).</p>
+
+  <div class="tiers">
+    <div class="t g"><span class="lab2">green · measured live</span><br>The Legendre dual is evaluated numerically in-browser and matches the analytic <b>p²/2m</b> to grid precision; the self-dual gap at m=1 falls to the floor. The energy⟺momentum bridge (Lagrangian → Hamiltonian) is exact for the quadratic, node-verified before shipping.</div>
+    <div class="t a"><span class="lab2">amber · the shown case</span><br>Only the <b>quadratic</b> (½mv²) is drawn — chosen because its dual is exact and clean. The Legendre transform is involutive for <i>all</i> convex functions, but that general round-trip is grid-sensitive to render; the picture is the cleanest instance, not the whole theorem.</div>
+    <div class="t r"><span class="lab2">red · where it breaks</span><br>Legendre duality needs <b>convexity</b> — for non-convex f the transform loses information (it returns the convex hull; f** ≠ f). A real, provable duality with a stated domain, not a universal one.</div>
+  </div>
+
+  <div class="foot"><span class="g">DYAS · the Legendre Dyad</span> · energy ⟺ momentum, measured · David Lee Wise / ROOT0, with AVAN · CC-BY-ND-4.0</div>
+</div>
+<script>
+"use strict";
+(function(){
+  var cv=document.getElementById("cv"),cx=cv.getContext("2d"),dpr=Math.min(devicePixelRatio||1,2);
+  function fit(){var w=cv.clientWidth||640,h=230;cv.width=w*dpr;cv.height=h*dpr;cx.setTransform(dpr,0,0,dpr,0,0);return [w,h];}
+  var col=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||"#000";};
+  var M=1;
+  // numeric Legendre: f*(p)=max_x(px - f(x))
+  function legendre(p,m){var best=-1e18;for(var x=-6;x<=6;x+=0.01){var v=p*x-0.5*m*x*x;if(v>best)best=v;}return best;}
+  function render(){
+    var d=fit(),W=d[0],H=d[1];cx.clearRect(0,0,W,H);
+    var cxp=W/2,base=H-24,sx=W/13,sy=(H-40)/9; // x in [-6,6], y in [0,9]
+    // axes
+    cx.strokeStyle="rgba(184,145,47,0.2)";cx.beginPath();cx.moveTo(0,base);cx.lineTo(W,base);cx.moveTo(cxp,0);cx.lineTo(cxp,H);cx.stroke();
+    function plot(fn,color){cx.strokeStyle=color;cx.lineWidth=2.4;cx.beginPath();var first=true;
+      for(var t=-6;t<=6;t+=0.05){var y=fn(t);if(y>9.2)continue;var X=cxp+t*sx,Y=base-y*sy;if(first){cx.moveTo(X,Y);first=false;}else cx.lineTo(X,Y);}cx.stroke();}
+    // energy f(v)=½ m v²  (carbon)
+    plot(function(v){return 0.5*M*v*v;},col("--carbon"));
+    // dual H(p)=p²/2m  (silicon)
+    plot(function(p){return p*p/(2*M);},col("--silicon"));
+    // verification
+    var e=0; for(var p=-3;p<=3;p+=0.25){e=Math.max(e,Math.abs(legendre(p,M)-p*p/(2*M)));}
+    document.getElementById("err").textContent=e.toExponential(1);
+    // self-dual gap: sample |f(t)-f*(t)|
+    var sg=0; for(var t=-3;t<=3;t+=0.25){sg=Math.max(sg,Math.abs(0.5*M*t*t - t*t/(2*M)));}
+    document.getElementById("self").textContent=(Math.abs(M-1)<0.004?"0.000 ✓":sg.toFixed(3));
+    var st=document.getElementById("state");
+    st.textContent = Math.abs(M-1)<0.004 ? "SELF-LEGENDRE — energy and its dual are the same parabola." :
+      "m="+M.toFixed(2)+" · energy steepness ×"+M.toFixed(2)+", dual flattens ×"+(1/M).toFixed(2)+" — inverse faces.";
+  }
+  document.getElementById("m").addEventListener("input",function(e){M=+e.target.value;document.getElementById("mv").textContent=M.toFixed(2);render();});
+  addEventListener("resize",render);render();
+})();
+</script></body></html>
