@@ -2,8 +2,8 @@ ROOT0-DLW-CHAIN-v1
 index : 1236
 slug  : the-legendre-dyad
 seal  : 8ac7cb7f0e80af381233a6001fa90e8abbf15b8e292e5952247c74589ac7f28e
-prev  : e366c3797791a84b369975ed07a9a16982f8cefced3fca50efe6d2fba5ee3e18
-link  : 34907fd53d52141e09b4874e4821ca444515cb2b9e7203e2fc1008f375d415a3
-head  : bd461e5908c0b11ac61d2ec1eb3e800ab2683a29c546171f7573690ca8e99ee2
+prev  : 6b9256a4dada2f0de5a48cf01c004ee9af56e5243e2563bfc0e029102e4a15a9
+link  : 368a7e9617abc54262ab581eaa08ac9224646e0778ff254a5f1196632a038a30
+head  : c4d41afeaef76470528856d54d86cf480a0e1c2fc8ebc60fbb9eb8e442585f2b
 
 — the tether: link = sha256(index|slug|seal|prev). the chain head commits to the whole corpus.
